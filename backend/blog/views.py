@@ -1,4 +1,3 @@
-from cgitb import lookup
 from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework.views import APIView
@@ -10,23 +9,23 @@ class BlogPostListView(ListAPIView):
     queryset = BlogPost.objects.order_by('-date_created')
     serializer_class = BlogPostSerializer
     lookup_field = 'slug'
-    permission_classes = (permissions.AllowAny)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 class BlogPostDetailView(RetrieveAPIView):
     queryset = BlogPost.objects.order_by('-date_created')
     serializer_class = BlogPostSerializer
     lookup_field = 'slug'
-    permission_classes = (permissions.AllowAny)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 class BlogPostFeaturedView(ListAPIView):
     queryset = BlogPost.objects.all().filter(featured=True)
     serializer_class = BlogPostSerializer
     lookup_field = 'slug'
-    permission_classes = (permissions.AllowAny)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 class BlogPostCategoryView(APIView):
     serializer_class = BlogPostSerializer
-    permission_classes = (permissions.AllowAny)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get(self, request, format=None):
         data = self.request.data
